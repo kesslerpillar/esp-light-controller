@@ -123,11 +123,6 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
             break;
         case HTTP_EVENT_ON_DATA:
             ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
-            if (!esp_http_client_is_chunked_response(evt->client)) {
-                // Write out data
-                // printf("%.*s", evt->data_len, (char*)evt->data);
-            }
-
             break;
         case HTTP_EVENT_ON_FINISH:
             ESP_LOGD(TAG, "HTTP_EVENT_ON_FINISH");
@@ -139,16 +134,8 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-static void http_get_task(void *pvParameters)
+static void http_get_request()
 {
-    const struct addrinfo hints = {
-        .ai_family = AF_INET,
-        .ai_socktype = SOCK_STREAM,
-    };
-    struct addrinfo *res;
-    struct in_addr *addr;
-    int s, r;
-    char recv_buf[64];
 
     while(1) {
         esp_http_client_config_t config = {
@@ -199,11 +186,7 @@ void app_main()
     tcpip_adapter_init();
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-     */
     ESP_ERROR_CHECK(config_connect());
 
-    xTaskCreate(&http_get_task, "http_get_task", 4096, NULL, 5, NULL);
+    xTaskCreate(&http_get_request, "http_get_request", 4096, NULL, 5, NULL);
 }
