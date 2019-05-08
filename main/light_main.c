@@ -89,7 +89,7 @@ static void http_get_task(void *pvParameters)
 
     while(1) {
         esp_http_client_config_t config = {
-                .url = "http://10.3.10.229:8080/turn/on",
+                .url = CONFIG_TURN_ON_LIGHT_URL,
                 .event_handler = _http_event_handler,
         };
         esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -109,7 +109,7 @@ static void http_get_task(void *pvParameters)
         sleep(5);
 
         esp_http_client_config_t config2 = {
-                .url = "http://10.3.10.229:8080/turn/off",
+                .url = CONFIG_TURN_OFF_LIGHT_URL,
                 .event_handler = _http_event_handler,
         };
         esp_http_client_handle_t client2 = esp_http_client_init(&config2);

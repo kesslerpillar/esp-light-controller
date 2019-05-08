@@ -11,4 +11,16 @@ menu "Example Connection Configuration"
         default "mypassword"
         help
             WiFi password (WPA or WPA2) for the example to use.
+
+    config TURN_ON_LIGHT_URL
+        string "Turn On Light API URL"
+        default "http://localhost:8080/turn/on"
+        help
+            Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
+
+    config TURN_OFF_LIGHT_URL
+        string "Turn Off Light API URL"
+        default "http://localhost:8080/turn/off"
+        help
+            Turn Light off url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 endmenu
