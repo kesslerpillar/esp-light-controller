@@ -1,39 +1,14 @@
-/* HTTP GET Example using plain POSIX sockets
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
-#include <string.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_system.h"
 #include "esp_wifi.h"
-#include "esp_event.h"
+#include "esp_http_client.h"
 #include "esp_log.h"
+#include "lwip/sockets.h"
 #include "nvs_flash.h"
 #include "protocol_examples_common.h"
-
-#include "lwip/err.h"
-#include "lwip/sockets.h"
-#include "lwip/sys.h"
 #include "lwip/netdb.h"
-#include "lwip/dns.h"
-#include "esp_http_client.h"
 
-/* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER "10.3.10.229"
-#define WEB_PORT 80
-#define WEB_URL "http://10.3.10.229:8080/turn/on"
 
 static const char *TAG = "example";
 
-static const char *REQUEST = "GET " WEB_URL " HTTP/1.0\r\n"
-    "Host: "WEB_SERVER"\r\n"
-    "User-Agent: esp-idf/1.0 esp32\r\n"
-    "\r\n";
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
