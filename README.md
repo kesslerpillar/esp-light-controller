@@ -1,5 +1,3 @@
-# HTTP Request Example
+# ESP Light Controller
 
-Uses a POSIX socket to make a very simple HTTP request.
-
-See the README.md file in the upper level 'examples' directory for more information about examples.
+This project uses the C Light Controller and creats an ESP specific LightSwitch and list of Lights.
