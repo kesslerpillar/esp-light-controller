@@ -3,12 +3,45 @@
 #include "esp_log.h"
 #include "lwip/sockets.h"
 #include "nvs_flash.h"
-#include "protocol_examples_common.h"
 #include "lwip/netdb.h"
+#include "freertos/event_groups.h"
+
+#define GOT_IPV4_BIT  BIT(0)
+#define GOT_IPV6_BIT  BIT(1)
+
+#ifdef CONFIG_EXAMPLE_CONNECT_IPV6
+#define CONNECTED_BITS  (GOT_IPV4_BIT | GOT_IPV6_BIT)
+#else
+#define CONNECTED_BITS  (GOT_IPV4_BIT)
+#endif
+
+#ifdef CONFIG_EXAMPLE_CONNECT_IPV6
+static ip6_addr_t s_ipv6_addr;
+#endif
 
 
+static EventGroupHandle_t s_connect_event_group;
 static const char *TAG = "example";
+static const char* s_connection_name;
+static ip4_addr_t s_ip_addr;
+/* set up connection, Wi-Fi or Ethernet */
+static void start();
 
+esp_err_t config_connect()
+{
+    if (s_connect_event_group != NULL) {
+        return ESP_ERR_INVALID_STATE;
+    }
+    s_connect_event_group = xEventGroupCreate();
+    start();
+    xEventGroupWaitBits(s_connect_event_group, CONNECTED_BITS, true, true, portMAX_DELAY);
+    ESP_LOGI(TAG, "Connected to %s", s_connection_name);
+    ESP_LOGI(TAG, "IPv4 address: " IPSTR, IP2STR(&s_ip_addr));
+#ifdef CONFIG_EXAMPLE_CONNECT_IPV6
+    ESP_LOGI(TAG, "IPv6 address: " IPV6STR, IPV62STR(s_ipv6_addr));
+#endif
+    return ESP_OK;
+}
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -107,7 +140,7 @@ void app_main()
      * Read "Establishing Wi-Fi or Ethernet Connection" section in
      * examples/protocols/README.md for more information about this function.
      */
-    ESP_ERROR_CHECK(example_connect());
+    ESP_ERROR_CHECK(config_connect());
 
     xTaskCreate(&http_get_task, "http_get_task", 4096, NULL, 5, NULL);
 }
