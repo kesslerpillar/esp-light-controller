@@ -130,3 +130,23 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     }
     return ESP_OK;
 }
+
+void getRequest(char *url){
+    esp_http_client_config_t config2 = {
+            .url = url,
+            .event_handler = _http_event_handler,
+    };
+    esp_http_client_handle_t client2 = esp_http_client_init(&config2);
+
+    // GET
+    esp_err_t err2 = esp_http_client_perform(client2);
+    if (err2 == ESP_OK) {
+        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
+                 esp_http_client_get_status_code(client2),
+                 esp_http_client_get_content_length(client2));
+    } else {
+        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err2));
+    }
+
+    esp_http_client_cleanup(client2);
+}
