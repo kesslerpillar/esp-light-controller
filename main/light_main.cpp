@@ -6,58 +6,21 @@
 #include "sdkconfig.h"
 #include <stdbool.h>
 #include <tcpip_adapter.h>
+#include <lib/LightController.h>
 #include "nvs_flash.h"
 #include "lwip/netdb.h"
 #include "esp_event.h"
 #include "service/wifi_service.h"
+#include "PhysicalLight.h"
+#include "WebLight.h"
+#include "ButtonLightSwitch.h"
+#include <memory>
+#include <vector>
+using namespace std;
 
 #define LED GPIO_NUM_12
 #define BUTTON GPIO_NUM_26
 
-int toggle_mode = 1;
-int already_pressed = 0;
-
-bool isButtonPressed() {
-    return gpio_get_level(BUTTON);
-}
-
-void setPinsForInputOutput() {
-    gpio_pad_select_gpio(LED);
-    gpio_pad_select_gpio(BUTTON);
-    gpio_set_direction(LED, GPIO_MODE_OUTPUT);
-    gpio_set_direction(BUTTON, GPIO_MODE_INPUT);
-}
-
-void toggleLED() {
-    printf("Toggling the LED\n");
-    toggle_mode = (toggle_mode == 0) ? 1 : 0;
-    gpio_set_level(LED, toggle_mode);
-}
-
-void toggleWebLight() {
-    if(toggle_mode == 0) {
-        getRequest(CONFIG_TURN_ON_LIGHT_URL);
-    } else {
-        getRequest(CONFIG_TURN_OFF_LIGHT_URL);
-    }
-}
-
-void handleButtonPresses() {
-    /* Detect button push */
-    if(isButtonPressed()) {
-        if(already_pressed == 0) {
-            toggleLED();
-            already_pressed = 1;
-            toggleWebLight();
-        } else {
-            printf("Button already pressed, ignoring until it's released\n");
-        }
-    }
-    else {
-        already_pressed = 0;
-    }
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-}
 
 void setupWiFi() {
     // Set up Wi-Fi connection
@@ -72,14 +35,22 @@ extern "C" {
 
 void app_main()
 {
-    setPinsForInputOutput();
     setupWiFi();
 
-    // Turn light off to start
-    gpio_set_level(LED, toggle_mode);
+
+    vector<shared_ptr<Light> > lights(2);
+
+    lights[0].reset(new PhysicalLight());
+    lights[1].reset(new WebLight());
+
+    shared_ptr<LightSwitch> lightSwitch(new ButtonLightSwitch());
+
+    LightController lightController(lightSwitch, lights);
+
 
     while(1) {
-        handleButtonPresses();
+        lightController.update();
+        vTaskDelay(50 / portTICK_PERIOD_MS);
     }
 }
 
