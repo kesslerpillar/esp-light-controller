@@ -1,3 +1,12 @@
+#include <vector>
+#include "wifi_service.h"
+#include "ButtonLightSwitch.h"
+#include "WebLight.h"
+#include "PhysicalLight.h"
+#include "service/wifi_service.h"
+#include "esp_event.h"
+#include "nvs_flash.h"
+#include <lib/LightController.h>
 #include "esp_wifi.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
@@ -149,4 +158,13 @@ void getRequest(const char *url){
     }
 
     esp_http_client_cleanup(client2);
+}
+
+void setupWiFi() {
+    // Set up Wi-Fi connection
+    ESP_ERROR_CHECK( nvs_flash_init() );
+    tcpip_adapter_init();
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    ESP_ERROR_CHECK(config_connect());
 }
