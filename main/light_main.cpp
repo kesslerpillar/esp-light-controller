@@ -5,12 +5,14 @@
 #include "driver/gpio.h"
 #include "sdkconfig.h"
 #include <stdbool.h>
+#include <tcpip_adapter.h>
 #include "nvs_flash.h"
 #include "lwip/netdb.h"
-#include "service/wifi_service.c"
+#include "esp_event.h"
+#include "service/wifi_service.h"
 
-#define LED 12
-#define BUTTON 26
+#define LED GPIO_NUM_12
+#define BUTTON GPIO_NUM_26
 
 int toggle_mode = 1;
 int already_pressed = 0;
@@ -66,6 +68,8 @@ void setupWiFi() {
     ESP_ERROR_CHECK(config_connect());
 }
 
+extern "C" {
+
 void app_main()
 {
     setPinsForInputOutput();
@@ -77,4 +81,6 @@ void app_main()
     while(1) {
         handleButtonPresses();
     }
+}
+
 }

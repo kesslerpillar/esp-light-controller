@@ -73,12 +73,10 @@ static void start()
 #endif
 
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
-    wifi_config_t wifi_config = {
-            .sta = {
-                    .ssid = CONFIG_ESP_WIFI_SSID,
-                    .password = CONFIG_ESP_WIFI_PASSWORD,
-            },
-    };
+    wifi_config_t wifi_config;
+    memset(&wifi_config, 0, sizeof(wifi_config_t));
+    strcpy(reinterpret_cast<char *>(wifi_config.sta.ssid), CONFIG_ESP_WIFI_SSID);
+    strcpy(reinterpret_cast<char *>(wifi_config.sta.password), CONFIG_ESP_WIFI_PASSWORD);
     ESP_LOGI(TAG, "Connecting to %s...", wifi_config.sta.ssid);
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
@@ -131,11 +129,13 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-void getRequest(char *url){
-    esp_http_client_config_t config2 = {
-            .url = url,
-            .event_handler = _http_event_handler,
-    };
+void getRequest(const char *url){
+    ESP_LOGI(TAG, "Requesting: %s", url);
+    esp_http_client_config_t config2;
+    memset(&config2, 0, sizeof(esp_http_client_config_t));
+    config2.url = url;
+    config2.event_handler = _http_event_handler;
+
     esp_http_client_handle_t client2 = esp_http_client_init(&config2);
 
     // GET

@@ -1,6 +1,6 @@
 set(COMPONENT_SRCS
-        "light_main.c"
-        "service/wifi_service.c"
+        "light_main.cpp"
+        "service/wifi_service.cpp"
         )
 set(COMPONENT_ADD_INCLUDEDIRS ".")
 
