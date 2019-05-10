@@ -2,19 +2,19 @@ menu "Example Connection Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
-        default "myssid"
+        default "TheForge"
         help
             SSID (network name) for the example to connect to.
 
     config ESP_WIFI_PASSWORD
         string "WiFi Password"
-        default "mypassword"
+        default "speed2VALUE!"
         help
             WiFi password (WPA or WPA2) for the example to use.
 
     config TURN_ON_LIGHT_URL
         string "Turn On Light API URL"
-        default "http://localhost:8080/turn/on"
+        default "http://10.3.10.157:8080/turn/on"
         help
             Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 

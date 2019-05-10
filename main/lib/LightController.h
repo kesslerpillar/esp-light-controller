@@ -2,8 +2,8 @@
 #define __REVERSE_H__
 
 #include <string>
-#include "../../../light-controller/src/main/api/LightSwitch.h"
-#include "../../../light-controller/src/main/api/Light.h"
+#include "api/LightSwitch.h"
+#include "api/Light.h"
 #include <memory>
 #include <vector>
 

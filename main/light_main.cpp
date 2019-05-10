@@ -12,7 +12,7 @@ using namespace std;
 unique_ptr<LightController> getLightController();
 
 unique_ptr<LightController> getLightController() {
-    vector<shared_ptr<Light> > lights{(Light *) new PhysicalLight(), (Light *) new WebLight()};
+    vector<shared_ptr<Light> > lights{(shared_ptr<Light>) make_shared<PhysicalLight>(), (shared_ptr<Light>) make_shared<WebLight>()};
     shared_ptr<LightSwitch> lightSwitch(new ButtonLightSwitch());
     unique_ptr<LightController> lightController(new LightController(lightSwitch, lights));
     return lightController;

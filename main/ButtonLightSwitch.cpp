@@ -5,7 +5,7 @@
 #include "ButtonLightSwitch.h"
 #include "driver/gpio.h"
 
-#define BUTTON GPIO_NUM_26
+#define BUTTON GPIO_NUM_12
 
 ButtonLightSwitch::ButtonLightSwitch() {
     gpio_pad_select_gpio(BUTTON);
