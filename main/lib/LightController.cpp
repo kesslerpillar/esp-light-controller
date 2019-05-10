@@ -14,3 +14,12 @@ void LightController::update() {
     }
 
 }
+
+void LightController::blinkLight() {
+    for(int i = 0; i < 2; i++) {
+        lights[0]->turnOn();
+        sleep(1);
+        lights[0]->turnOff();
+        sleep(1);
+    }
+}

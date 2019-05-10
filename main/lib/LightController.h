@@ -21,6 +21,8 @@ class LightController
         LightController(std::shared_ptr<LightSwitch> &lightSwitch, std::vector<std::shared_ptr<Light> > &lights);
 
         void update();
+
+        void blinkLight();
 };
 
 // LightController(Input input, Light[] lights)

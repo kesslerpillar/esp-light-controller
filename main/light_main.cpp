@@ -24,6 +24,7 @@ void app_main()
 {
     setupWiFi();
     unique_ptr<LightController> lightController = getLightController();
+    lightController -> blinkLight();
 
     while(1) {
         lightController->update();
