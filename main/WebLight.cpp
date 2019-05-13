@@ -8,14 +8,14 @@
 
 void WebLight::turnOn() {
     if(!isOn) {
-        getRequest(CONFIG_TURN_ON_LIGHT_URL);
-        isOn = true;
+//        getRequest(CONFIG_TURN_ON_LIGHT_URL);
+//        isOn = true;
     }
 }
 
 void WebLight::turnOff() {
     if(isOn) {
-        getRequest(CONFIG_TURN_OFF_LIGHT_URL);
-        isOn = false;
+//        getRequest(CONFIG_TURN_OFF_LIGHT_URL);
+//        isOn = false;
     }
 }
