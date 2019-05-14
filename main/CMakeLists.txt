@@ -5,7 +5,8 @@ set(COMPONENT_SRCS
         "ButtonLightSwitch.cpp"
         "PhysicalLight.cpp"
         "WebLight.cpp"
-        )
+        "MqttLight.cpp"
+        "service/MqttService.cpp")
 
 set(COMPONENT_ADD_INCLUDEDIRS "." "lib")
 

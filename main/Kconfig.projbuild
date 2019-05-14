@@ -1,4 +1,4 @@
-menu "Example Connection Configuration"
+menu "Connection Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
@@ -12,15 +12,39 @@ menu "Example Connection Configuration"
         help
             WiFi password (WPA or WPA2) for the example to use.
 
+    config MQTT_BROKER_URL
+            string "MQTT Broker URL"
+            default "mqtt://10.3.10.229:1883"
+            help
+                MQTT Broker URL to publish commands and subscribe to statuses
+
+    config MQTT_PUBLISH_TOPIC
+            string "MQTT Publish Topic"
+            default "iot.light.switch"
+            help
+                MQTT publish topic to impact subcribed lights
+
+    config MQTT_PUBLISH_ON_MESSAGE
+            string "MQTT Publish On Message"
+            default "on"
+            help
+                MQTT publish message for turning on lights that are subscribed
+
+    config MQTT_PUBLISH_OFF_MESSAGE
+            string "MQTT Publish Off Message"
+            default "off"
+            help
+                MQTT publish message for turning off lights that are subscribed
+
     config TURN_ON_LIGHT_URL
         string "Turn On Light API URL"
-        default "http://10.3.10.157:8080/turn/on"
+        default "http://1.1.1.1:8080/turn/on"
         help
             Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 
     config TURN_OFF_LIGHT_URL
         string "Turn Off Light API URL"
-        default "http://localhost:8080/turn/off"
+        default "http://1.1.1.1:8080/turn/off"
         help
             Turn Light off url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 endmenu
