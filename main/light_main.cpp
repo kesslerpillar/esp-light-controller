@@ -38,16 +38,16 @@ extern "C" {
         unique_ptr<LightController> lightController = getLightController();
         lightController -> blinkLight();
 
+        esp_mqtt_client_config_t mqtt_cfg;
+
+        memset(&mqtt_cfg, 0, sizeof(mqtt_cfg));
+        mqtt_cfg.uri = "mqtt://10.3.10.229:1883";
+        mqtt_cfg.event_handle = mqtt_event_handler;
+
+        esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
+        esp_mqtt_client_start(client);
+
         while(1) {
-            esp_mqtt_client_config_t mqtt_cfg;
-
-            memset(&mqtt_cfg, 0, sizeof(mqtt_cfg));
-            mqtt_cfg.uri = "tcp://10.3.10.229:1883";
-            mqtt_cfg.event_handle = mqtt_event_handler;
-
-            esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
-            esp_mqtt_client_start(client);
-
             lightController->update();
             vTaskDelay(50 / portTICK_PERIOD_MS);
         }
