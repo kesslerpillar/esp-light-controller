@@ -14,7 +14,7 @@ menu "Example Connection Configuration"
 
     config TURN_ON_LIGHT_URL
         string "Turn On Light API URL"
-        default "http://10.3.10.157:8080/turn/on"
+        default "http://localhost:8080/turn/on"
         help
             Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 
