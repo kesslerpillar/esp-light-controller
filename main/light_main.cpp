@@ -5,6 +5,7 @@
 #include "PhysicalLight.h"
 #include "MqttLight.h"
 #include "ButtonLightSwitch.h"
+#include "service/MqttService.h"
 #include <vector>
 
 using namespace std;
@@ -22,6 +23,7 @@ extern "C" {
     void app_main()
     {
         setupWiFi();
+        openMqttConnection(CONFIG_MQTT_BROKER_URL);
         unique_ptr<LightController> lightController = getLightController();
         lightController -> blinkLight();
 

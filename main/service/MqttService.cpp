@@ -1,20 +1,17 @@
 #include "MqttService.h"
-#include "mqtt_client.h"
 #include "esp_log.h"
+#include "esp_event.h"
+#include <mqtt_client.h>
+
+static esp_mqtt_client_handle_t client;
 
 static const char *TAG = "MQTT";
-const char *TOPIC;
-const char *MESSAGE;
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 {
-    esp_mqtt_client_handle_t client = event->client;
-    int msg_id;
     switch (event->event_id) {
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-            msg_id = esp_mqtt_client_publish(client, TOPIC, MESSAGE, 0, 0, 0);
-            ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
             break;
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -44,17 +41,17 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
     return ESP_OK;
 }
 
-void publish(const char *url, const char *topic, const char *message){
-    TOPIC = topic;
-    MESSAGE = message;
-
+void openMqttConnection(const char *url){
     esp_mqtt_client_config_t mqtt_cfg;
     memset(&mqtt_cfg, 0, sizeof(mqtt_cfg));
     mqtt_cfg.uri = url;
     mqtt_cfg.event_handle = mqtt_event_handler;
-    mqtt_cfg.disable_auto_reconnect = true;
-    mqtt_cfg.keepalive = 0;
 
-    esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
+    client = esp_mqtt_client_init(&mqtt_cfg);
     esp_mqtt_client_start(client);
+}
+
+void publish(const char *topic, const char *message){
+    int msg_id = esp_mqtt_client_publish(client, topic, message, 0, 0, 0);
+    ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 }
