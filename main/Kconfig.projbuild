@@ -1,4 +1,4 @@
-menu "Example Connection Configuration"
+menu "Connection Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
@@ -11,6 +11,30 @@ menu "Example Connection Configuration"
         default "YOUR-PASSWORD"
         help
             WiFi password (WPA or WPA2) for the example to use.
+
+    config MQTT_BROKER_URL
+            string "MQTT Broker URL"
+            default "mqtt://localhost:1883"
+            help
+                MQTT Broker URL to publish commands and subscribe to statuses
+
+    config MQTT_PUBLISH_TOPIC
+            string "MQTT Publish Topic"
+            default "iot.light.switch"
+            help
+                MQTT publish topic to impact subcribed lights
+
+    config MQTT_PUBLISH_ON_MESSAGE
+            string "MQTT Publish On Message"
+            default "on"
+            help
+                MQTT publish message for turning on lights that are subscribed
+
+    config MQTT_PUBLISH_OFF_MESSAGE
+            string "MQTT Publish Off Message"
+            default "off"
+            help
+                MQTT publish message for turning off lights that are subscribed
 
     config TURN_ON_LIGHT_URL
         string "Turn On Light API URL"

@@ -1,7 +1,3 @@
-//
-// Created by nathan.l.gordon on 2019-05-09.
-//
-
 #include "WebLight.h"
 #include "sdkconfig.h"
 #include "service/wifi_service.h"
