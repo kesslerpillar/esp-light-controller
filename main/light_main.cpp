@@ -7,16 +7,24 @@
 #include "ButtonLightSwitch.h"
 #include "service/MqttService.h"
 #include <vector>
+#include <string.h>
+#include <esp_log.h>
 
 using namespace std;
 
 unique_ptr<LightController> getLightController();
 
 unique_ptr<LightController> getLightController() {
-    vector<shared_ptr<Light> > lights{(shared_ptr<Light>) make_shared<PhysicalLight>(), (shared_ptr<Light>) make_shared<MqttLight>()};
+    vector<shared_ptr<Light> > lights{(shared_ptr<Light>) make_shared<PhysicalLight>()};
     shared_ptr<LightSwitch> lightSwitch(new ButtonLightSwitch());
     unique_ptr<LightController> lightController(new LightController(lightSwitch, lights));
     return lightController;
+}
+
+unique_ptr<LightController> getBlinkLightController() {
+    shared_ptr<Light> blinkLight{(shared_ptr<Light>) make_shared<PhysicalLight>()};
+    unique_ptr<LightController> lightBlinkController(new LightController(blinkLight));
+    return lightBlinkController;
 }
 
 extern "C" {
@@ -24,11 +32,17 @@ extern "C" {
     {
         setupWiFi();
         openMqttConnection(CONFIG_MQTT_BROKER_URL);
+        subscribe(CONFIG_MQTT_PUBLISH_TOPIC);
+        unique_ptr<LightController> lightBlinkController = getBlinkLightController();
+        lightBlinkController -> blinkLight();
         unique_ptr<LightController> lightController = getLightController();
-        lightController -> blinkLight();
 
         while(1) {
-            lightController->update();
+            lightController->updateSwitch();
+            ESP_LOGI("TEST", "Subscribe: %s", getSubscribeMessage());
+            if (strcmp(getSubscribeMessage(), "") != 0){
+                lightController->updateLights(getSubscribeMessage());
+            }
             vTaskDelay(50 / portTICK_PERIOD_MS);
         }
     }

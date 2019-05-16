@@ -14,13 +14,16 @@
 class LightController
 {
     private:
-        std::shared_ptr<LightSwitch> lightSwitch;
-        std::vector<std::shared_ptr<Light> > lights;
+    std::shared_ptr<LightSwitch> lightSwitch;
+    std::vector<std::shared_ptr<Light> > lights;
+    std::shared_ptr<Light> light;
 
     public:
         LightController(std::shared_ptr<LightSwitch> &lightSwitch, std::vector<std::shared_ptr<Light> > &lights);
+        LightController(std::shared_ptr<Light> &light);
 
-        void update();
+        void updateSwitch();
+        void updateLights(const char * lightStatus);
 
         void blinkLight();
 };

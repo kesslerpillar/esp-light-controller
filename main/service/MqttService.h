@@ -3,5 +3,7 @@
 
 void openMqttConnection(const char *url);
 void publish(const char *topic, const char *message);
+void subscribe(const char *topic);
+const char * getSubscribeMessage();
 
 #endif
