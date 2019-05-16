@@ -2,19 +2,19 @@ menu "Connection Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
-        default "TheForge"
+        default "myssid"
         help
             SSID (network name) for the example to connect to.
 
     config ESP_WIFI_PASSWORD
         string "WiFi Password"
-        default "speed2VALUE!"
+        default "mypassword"
         help
             WiFi password (WPA or WPA2) for the example to use.
 
     config MQTT_BROKER_URL
             string "MQTT Broker URL"
-            default "mqtt://10.3.10.229:1883"
+            default "mqtt://localhost:1883"
             help
                 MQTT Broker URL to publish commands and subscribe to statuses
 
@@ -38,13 +38,13 @@ menu "Connection Configuration"
 
     config TURN_ON_LIGHT_URL
         string "Turn On Light API URL"
-        default "http://1.1.1.1:8080/turn/on"
+        default "http://localhost:8080/turn/on"
         help
             Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 
     config TURN_OFF_LIGHT_URL
         string "Turn Off Light API URL"
-        default "http://1.1.1.1:8080/turn/off"
+        default "http://localhost:8080/turn/off"
         help
             Turn Light off url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
 endmenu
