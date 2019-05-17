@@ -39,7 +39,6 @@ extern "C" {
 
         while(1) {
             lightController->updateSwitch();
-            ESP_LOGI("TEST", "Subscribe: %s", getSubscribeMessage());
             if (strcmp(getSubscribeMessage(), "") != 0){
                 lightController->updateLights(getSubscribeMessage());
             }

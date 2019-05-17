@@ -3,14 +3,13 @@
 #include "esp_event.h"
 #include <mqtt_client.h>
 #include <freertos/event_groups.h>
-#include <sstream>
 
 static esp_mqtt_client_handle_t client;
 static EventGroupHandle_t mqtt_event_group;
 const static int CONNECTED_BIT = BIT0;
 
 static const char *TAG = "MQTT";
-const char *SUBSCIRBE_MESSAGE = "";
+char SubscribeMessage[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 {
@@ -22,7 +21,6 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
             break;
-
         case MQTT_EVENT_SUBSCRIBED:
             ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
             break;
@@ -33,7 +31,8 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
             ESP_LOGI(TAG, "MQTT_EVENT_PUBLISHED, msg_id=%d", event->msg_id);
             break;
         case MQTT_EVENT_DATA:
-            SUBSCIRBE_MESSAGE = event->data;
+            strncpy(SubscribeMessage, event->data, event->data_len);
+            SubscribeMessage[event->data_len] = 0;
             break;
         case MQTT_EVENT_ERROR:
             ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -59,13 +58,13 @@ void openMqttConnection(const char *url){
 }
 
 void publish(const char *topic, const char *message){
-    int msg_id = esp_mqtt_client_publish(client, topic, message, 0, 0, 0);
+    esp_mqtt_client_publish(client, topic, message, 0, 0, 0);
 }
 
 void subscribe(const char *topic){
-    int msg_id = esp_mqtt_client_subscribe(client, topic, 0);
+    esp_mqtt_client_subscribe(client, topic, 0);
 }
 
 const char * getSubscribeMessage(){
-    return SUBSCIRBE_MESSAGE;
+    return SubscribeMessage;
 }

@@ -28,7 +28,4 @@ class LightController
         void blinkLight();
 };
 
-// LightController(Input input, Light[] lights)
-// if(input.isOn())
-// light[0].turnOn();
 #endif

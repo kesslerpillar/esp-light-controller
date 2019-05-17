@@ -1,5 +1,7 @@
 #include <string.h>
 #include <cassert>
+#include <esp_log.h>
+#include <stdio.h>
 #include "LightController.h"
 #include "service/MqttService.h"
 
