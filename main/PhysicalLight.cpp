@@ -1,7 +1,3 @@
-//
-// Created by nathan.l.gordon on 2019-05-09.
-//
-
 #include "PhysicalLight.h"
 #include "driver/gpio.h"
 

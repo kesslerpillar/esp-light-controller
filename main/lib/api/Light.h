@@ -1,7 +1,5 @@
-
 #ifndef LIGHT_CONTROLLER_LIGHT_H
 #define LIGHT_CONTROLLER_LIGHT_H
-
 
 class Light {
     public:
@@ -9,5 +7,4 @@ class Light {
         virtual void turnOff() = 0;
 };
 
-
-#endif //LIGHT_CONTROLLER_LIGHT_H
+#endif

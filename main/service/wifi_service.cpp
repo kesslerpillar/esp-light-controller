@@ -1,14 +1,5 @@
-#include <vector>
-#include "wifi_service.h"
-#include "ButtonLightSwitch.h"
-#include "WebLight.h"
-#include "PhysicalLight.h"
-#include "service/wifi_service.h"
-#include "esp_event.h"
 #include "nvs_flash.h"
-#include <lib/LightController.h>
 #include "esp_wifi.h"
-#include "esp_http_client.h"
 #include "esp_log.h"
 #include "freertos/event_groups.h"
 #include <string.h>
@@ -26,9 +17,8 @@
 static ip6_addr_t s_ipv6_addr;
 #endif
 
-
 static EventGroupHandle_t s_connect_event_group;
-static const char *TAG = "example";
+static const char *TAG = "WIFI";
 static const char* s_connection_name;
 static ip4_addr_t s_ip_addr;
 
@@ -50,7 +40,7 @@ static void on_got_ipv6(void* arg, esp_event_base_t event_base,
     xEventGroupSetBits(s_connect_event_group, GOT_IPV6_BIT);
 }
 
-#endif // CONFIG_EXAMPLE_CONNECT_IPV6
+#endif
 
 static void on_wifi_disconnect(void* arg, esp_event_base_t event_base,
                                int32_t event_id, void* event_data)
@@ -67,7 +57,7 @@ static void on_wifi_connect(void* arg, esp_event_base_t event_base,
     tcpip_adapter_create_ip6_linklocal(TCPIP_ADAPTER_IF_STA);
 }
 
-#endif // CONFIG_EXAMPLE_CONNECT_IPV6
+#endif
 
 static void start()
 {
@@ -110,61 +100,9 @@ esp_err_t config_connect()
     return ESP_OK;
 }
 
-esp_err_t _http_event_handler(esp_http_client_event_t *evt)
-{
-    switch(evt->event_id) {
-        case HTTP_EVENT_ERROR:
-            ESP_LOGD(TAG, "HTTP_EVENT_ERROR");
-            break;
-        case HTTP_EVENT_ON_CONNECTED:
-            ESP_LOGD(TAG, "HTTP_EVENT_ON_CONNECTED");
-            break;
-        case HTTP_EVENT_HEADER_SENT:
-            ESP_LOGD(TAG, "HTTP_EVENT_HEADER_SENT");
-            break;
-        case HTTP_EVENT_ON_HEADER:
-            ESP_LOGD(TAG, "HTTP_EVENT_ON_HEADER, key=%s, value=%s", evt->header_key, evt->header_value);
-            break;
-        case HTTP_EVENT_ON_DATA:
-            ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
-            break;
-        case HTTP_EVENT_ON_FINISH:
-            ESP_LOGD(TAG, "HTTP_EVENT_ON_FINISH");
-            break;
-        case HTTP_EVENT_DISCONNECTED:
-            ESP_LOGD(TAG, "HTTP_EVENT_DISCONNECTED");
-            break;
-    }
-    return ESP_OK;
-}
-
-void getRequest(const char *url){
-    ESP_LOGI(TAG, "Requesting: %s", url);
-    esp_http_client_config_t config2;
-    memset(&config2, 0, sizeof(esp_http_client_config_t));
-    config2.url = url;
-    config2.event_handler = _http_event_handler;
-
-    esp_http_client_handle_t client2 = esp_http_client_init(&config2);
-
-    // GET
-    esp_err_t err2 = esp_http_client_perform(client2);
-    if (err2 == ESP_OK) {
-        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
-                 esp_http_client_get_status_code(client2),
-                 esp_http_client_get_content_length(client2));
-    } else {
-        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err2));
-    }
-
-    esp_http_client_cleanup(client2);
-}
-
 void setupWiFi() {
-    // Set up Wi-Fi connection
     ESP_ERROR_CHECK( nvs_flash_init() );
     tcpip_adapter_init();
     ESP_ERROR_CHECK(esp_event_loop_create_default());
-
     ESP_ERROR_CHECK(config_connect());
 }
