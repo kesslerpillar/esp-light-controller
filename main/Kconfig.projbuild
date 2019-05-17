@@ -36,15 +36,12 @@ menu "Connection Configuration"
             help
                 MQTT publish message for turning off lights that are subscribed
 
-    config TURN_ON_LIGHT_URL
-        string "Turn On Light API URL"
-        default "http://localhost:8080/turn/on"
-        help
-            Turn Light on url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
+    config LIGHT_ON_CODE
+        string "Code that represents the light being on"
+        default "1"
 
-    config TURN_OFF_LIGHT_URL
-        string "Turn Off Light API URL"
-        default "http://localhost:8080/turn/off"
-        help
-            Turn Light off url to running instance of Light API (https://github.com/tsmithaccenture/kata-iot-service.git)
+    config LIGHT_OFF_CODE
+        string "Code that represents the light being off"
+        default "0"
+
 endmenu

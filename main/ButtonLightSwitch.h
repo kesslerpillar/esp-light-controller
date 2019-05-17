@@ -1,10 +1,5 @@
-//
-// Created by nathan.l.gordon on 2019-05-09.
-//
-
 #ifndef ESP_LIGHT_CONTROLLER_BUTTONLIGHTSWITCH_H
 #define ESP_LIGHT_CONTROLLER_BUTTONLIGHTSWITCH_H
-
 
 #include <api/LightSwitch.h>
 
@@ -14,5 +9,4 @@ public:
     bool isOn() override;
 };
 
-
-#endif //ESP_LIGHT_CONTROLLER_BUTTONLIGHTSWITCH_H
+#endif
