@@ -13,9 +13,7 @@ LightController::LightController(std::shared_ptr<Light>& light) : light (light) 
 
 void LightController::updateSwitch() {
     if(lightSwitch->isOn()){
-        publish(CONFIG_MQTT_PUBLISH_TOPIC, CONFIG_MQTT_PUBLISH_ON_MESSAGE);
-    }else{
-        publish(CONFIG_MQTT_PUBLISH_TOPIC, CONFIG_MQTT_PUBLISH_OFF_MESSAGE);
+        publish(CONFIG_MQTT_PUBLISH_TOPIC);
     }
 }
 
