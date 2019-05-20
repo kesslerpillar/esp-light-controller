@@ -2,8 +2,9 @@
 #include "driver/gpio.h"
 
 #define LED GPIO_NUM_15
-#define OFF 1
-#define ON 0
+
+const int ON = 0;
+const int OFF = 1;
 
 PhysicalLight::PhysicalLight() {
     gpio_pad_select_gpio(LED);
@@ -13,8 +14,10 @@ PhysicalLight::PhysicalLight() {
 
 void PhysicalLight::turnOn() {
     gpio_set_level(LED, ON);
+    isOn = 1;
 }
 
 void PhysicalLight::turnOff() {
     gpio_set_level(LED, OFF);
+    isOn = 0;
 }
