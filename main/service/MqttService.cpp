@@ -57,8 +57,8 @@ void openMqttConnection(const char *url){
     xEventGroupWaitBits(mqtt_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
 }
 
-void publish(const char *topic, const char *message){
-    esp_mqtt_client_publish(client, topic, message, 0, 0, 0);
+void publish(const char *topic){
+    esp_mqtt_client_publish(client, topic, nullptr, 0, 0, 0);
 }
 
 void subscribe(const char *topic){

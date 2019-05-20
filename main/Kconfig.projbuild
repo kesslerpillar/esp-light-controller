@@ -24,18 +24,6 @@ menu "Connection Configuration"
             help
                 MQTT publish topic to impact subcribed lights
 
-    config MQTT_PUBLISH_ON_MESSAGE
-            string "MQTT Publish On Message"
-            default "on"
-            help
-                MQTT publish message for turning on lights that are subscribed
-
-    config MQTT_PUBLISH_OFF_MESSAGE
-            string "MQTT Publish Off Message"
-            default "off"
-            help
-                MQTT publish message for turning off lights that are subscribed
-
     config LIGHT_ON_CODE
         string "Code that represents the light being on"
         default "1"
@@ -43,5 +31,4 @@ menu "Connection Configuration"
     config LIGHT_OFF_CODE
         string "Code that represents the light being off"
         default "0"
-
 endmenu
