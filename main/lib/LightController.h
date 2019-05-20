@@ -17,7 +17,7 @@ class LightController
         LightController(std::shared_ptr<Light> &light);
 
         void updateSwitch();
-        void updateLights(const char * lightStatus);
+        void updateLights();
 
         void blinkLight();
 };

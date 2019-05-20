@@ -4,6 +4,7 @@
 void openMqttConnection(const char *url);
 void publish(const char *topic);
 void subscribe(const char *topic);
-const char * getSubscribeMessage();
+bool subscribeMessageIsReceived();
+void updateMessageReceivedStatus();
 
 #endif

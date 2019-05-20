@@ -36,7 +36,11 @@ extern "C" {
 
         while(1) {
             lightController->updateSwitch();
-            lightController->updateLights(getSubscribeMessage());
+            if (subscribeMessageIsReceived())
+            {
+                lightController->updateLights();
+                updateMessageReceivedStatus();
+            }
             vTaskDelay(50 / portTICK_PERIOD_MS);
         }
     }

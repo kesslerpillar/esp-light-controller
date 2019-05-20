@@ -6,7 +6,8 @@
 class ButtonLightSwitch : public LightSwitch{
 public:
     ButtonLightSwitch();
-    bool isOn() override;
+    bool isPressed() override;
+    void updateRespondedStatus(bool status) override;
 };
 
 #endif

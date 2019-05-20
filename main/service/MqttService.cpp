@@ -9,7 +9,8 @@ static EventGroupHandle_t mqtt_event_group;
 const static int CONNECTED_BIT = BIT0;
 
 static const char *TAG = "MQTT";
-char SubscribeMessage[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static const char *defaultMessage = "default";
+bool SubscribeMessageReceived = false;
 
 static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 {
@@ -31,8 +32,8 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
             ESP_LOGI(TAG, "MQTT_EVENT_PUBLISHED, msg_id=%d", event->msg_id);
             break;
         case MQTT_EVENT_DATA:
-            strncpy(SubscribeMessage, event->data, event->data_len);
-            SubscribeMessage[event->data_len] = 0;
+            SubscribeMessageReceived = true;
+            ESP_LOGI(TAG, "MQTT_SUBSCRIBE_RECEIVED");
             break;
         case MQTT_EVENT_ERROR:
             ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -58,13 +59,19 @@ void openMqttConnection(const char *url){
 }
 
 void publish(const char *topic){
-    esp_mqtt_client_publish(client, topic, nullptr, 0, 0, 0);
+    esp_mqtt_client_publish(client, topic, defaultMessage, 0, 0, 0);
+    ESP_LOGI(TAG, "MQTT_PUBLISH_SENT");
 }
 
 void subscribe(const char *topic){
     esp_mqtt_client_subscribe(client, topic, 0);
 }
 
-const char * getSubscribeMessage(){
-    return SubscribeMessage;
+bool subscribeMessageIsReceived(){
+    return SubscribeMessageReceived;
+}
+
+void updateMessageReceivedStatus(){
+    SubscribeMessageReceived = false;
+    ESP_LOGI(TAG, "MQTT_SUBSCRIBE_RECEIVED_RESET");
 }

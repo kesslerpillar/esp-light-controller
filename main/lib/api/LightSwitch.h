@@ -5,7 +5,10 @@ class LightSwitch {
 private:
 
     public:
-        virtual bool isOn() = 0;
+        virtual bool isPressed() = 0;
+        bool isResponded = 0;
+
+        virtual void updateRespondedStatus(bool status);
 };
 
 #endif

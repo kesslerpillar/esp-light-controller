@@ -23,12 +23,4 @@ menu "Connection Configuration"
             default "iot.light.switch"
             help
                 MQTT publish topic to impact subcribed lights
-
-    config LIGHT_ON_CODE
-        string "Code that represents the light being on"
-        default "1"
-
-    config LIGHT_OFF_CODE
-        string "Code that represents the light being off"
-        default "0"
 endmenu

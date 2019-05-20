@@ -8,6 +8,10 @@ ButtonLightSwitch::ButtonLightSwitch() {
     gpio_set_direction(BUTTON, GPIO_MODE_INPUT);
 }
 
-bool ButtonLightSwitch::isOn() {
+bool ButtonLightSwitch::isPressed() {
     return gpio_get_level(BUTTON);
+}
+
+void ButtonLightSwitch::updateRespondedStatus(bool status) {
+    isResponded = status;
 }
